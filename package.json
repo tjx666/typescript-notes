@@ -1,0 +1,9 @@
+{
+  "name": "typescript-notes",
+  "version": "1.0.0",
+  "description": "My typescript notes",
+  "main": "index.js",
+  "author": "YuTengjing",
+  "license": "MIT",
+  "private": true
+}

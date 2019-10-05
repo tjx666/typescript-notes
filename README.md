@@ -1,0 +1,1 @@
+# My typescript notes
