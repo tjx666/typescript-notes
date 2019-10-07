@@ -5,5 +5,8 @@
   "main": "index.js",
   "author": "YuTengjing",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "typescript": "^3.6.3"
+  }
 }
