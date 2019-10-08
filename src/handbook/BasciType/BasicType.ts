@@ -23,6 +23,11 @@ const binary = 0b10;
 console.log(binary); // => 2
 const octal = 0o10;
 console.log(octal); // => 8
+const nan: number = NaN;
+const max: number = Infinity;
+const min: number = Number.MIN_VALUE;
+console.log(Infinity === Number.MAX_VALUE); // false
+console.log(Infinity === Number.POSITIVE_INFINITY); // true
 
 // ------------------------ string -----------------------------
 // 和 js 没什么区别
@@ -96,6 +101,22 @@ console.log(Color[4]); // 'Green
 // 特点2：不可改，枚举值都是 readonly 的
 // Color.Green = 6; // => Cannot assign to 'Green' because it is a read-only property.
 
+// 枚举值还可以是字符串
+enum PromiseStatus {
+    PENDING = 'pending',
+    FULFILLED = 'fulfilled',
+    REJECTED = 'rejected',
+}
+
+// 枚举值允许重复
+enum LoadingStatus {
+    INITIAL = 0,
+    LOADING = 0,
+    SUCCESS = 1,
+    ERROR = -1,
+};
+
+
 // ------------------------ any -----------------------------
 // 万恶之源，尽量少用，不要把 typescript 用成 anyScript
 // 使用场景一： 当你不造一个变量是什么类型的时候，比如引用第三方库，而这个库没有类型声明
@@ -149,8 +170,19 @@ function infiniteLoop(): never {
     while (true) {}
 }
 
+function checkNumber(x: string | number): boolean {
+    if (typeof x === 'number') {
+        return true
+    } else if (typeof x === 'string') {
+        return false
+    }
+    
+    return error('Failure')
+}
+
+
 // ------------------------ object -----------------------------
-// object 不是 Object，object 表示一个类型不是基本类型： number, string, boolean, symbol, null, or undefined.
+// object 不是 Object，object 表示一个变量不是基本类型： number, string, boolean, symbol, null, or undefined.
 function create(object: object | null): void {
     return Object.create(object);
 }
