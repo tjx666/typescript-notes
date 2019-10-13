@@ -46,7 +46,7 @@ const letters: Array<string> = ['a', 'b', new String('c').toString()];
 console.log(forever[100]); // => undefined
 
 // ------------------------ Tuple -----------------------------
-// 元组，和 python 中元组有点像
+// 元组，和 python 中元组有点像，表示元素个数有限且类型可以不同的数组
 /*
 特点：
 1. 可以说是一种特殊的数组
