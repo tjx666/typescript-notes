@@ -1,5 +1,13 @@
 /**
  * typescript 基本类型
+ * 
+ * 本章主要了解下 typescript 中原生数据类型和一些特有的类型
+ * 基本数据类型还是那么几个： boolean, number, string, null, undefined, symbol
+ * 特有的挺多：Tuple, never, any, enum 等
+ * 一些特殊情况需要人为指定类型时可以使用类型断言
+ * 可以了解到 ts 中类型中非常丰富，实用和具有实际意义的
+ * 实用比如：接口，枚举，元组
+ * 实际意义：void, never
  */
 
 // ------------------------ boolean -----------------------------
