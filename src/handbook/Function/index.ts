@@ -118,7 +118,8 @@ let cardPicker = deck.createCardPicker();
 // let pickedCard = cardPicker();
 // console.log('card: ' + pickedCard.card + ' of ' + pickedCard.suit);
 
-// 为了禁止用户调用我们的第三方库传递的回调函数不会出现 this 错误，可以声明回调有个 this: void 参数
+// 回调函数经常因为被直接调用，this 指向错误，可以使用 this 参数来减少这种错误
+// 声明回调有个 this: void 参数
 const eventEmitter = {
     addListener(callback: (this: void) => void) {
         callback();
