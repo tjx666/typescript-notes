@@ -56,3 +56,127 @@ const log = (...parts: string[]) => {
     console.log(parts.join(', '));
 };
 log('Microsoft', 'Google', 'facebook'); // => Microsoft, Google, facebook
+
+// ------------------------ this -----------------------------
+// js 中的 this 指向是一个比较复杂得问题
+// 普通函数的 this 指向不不确定的，这也就是为什么在 ts 中普通函数中没有指定 this 类型时 this 会被推断为 any 类型的原因
+/**
+ 看下面 js 中的一个例子
+const obj = {
+    name: 'ly',
+    func() {
+        console.log(this.name);
+    }
+};
+
+obj.func = obj.func.bind({ name: 'bob' });
+obj.func() // => 'bob'
+结论就是：你无法确定普通函数的 this 是哪个类型
+ */
+(function() {
+    let deck = {
+        suits: ['hearts', 'spades', 'clubs', 'diamonds'],
+        cards: Array(52),
+        createCardPicker: function() {
+            return function() {
+                let pickedCard = Math.floor(Math.random() * 52);
+                let pickedSuit = Math.floor(pickedCard / 13);
+
+                // this' implicitly has type 'any' because it does not have a type annotatio
+                // return {suit: this.suits[pickedSuit], card: pickedCard % 13};
+            };
+        },
+    };
+})();
+
+// this 参数
+interface Card {
+    suit: string;
+    card: number;
+}
+interface Deck {
+    suits: string[];
+    cards: number[];
+    createCardPicker(this: Deck): () => Card;
+}
+let deck: Deck = {
+    suits: ['hearts', 'spades', 'clubs', 'diamonds'],
+    cards: Array(52),
+    // 给函数指定 this 参数，这样 ts 就知道 this 指向的类型了
+    createCardPicker: function() {
+        return function(this: Deck) {
+            let pickedCard = Math.floor(Math.random() * 52);
+            let pickedSuit = Math.floor(pickedCard / 13);
+
+            return { suit: this.suits[pickedSuit], card: pickedCard % 13 };
+        };
+    },
+};
+
+let cardPicker = deck.createCardPicker();
+// 编译通过 运行还是会报错
+// let pickedCard = cardPicker();
+// console.log('card: ' + pickedCard.card + ' of ' + pickedCard.suit);
+
+// 为了禁止用户调用我们的第三方库传递的回调函数不会出现 this 错误，可以声明回调有个 this: void 参数
+const eventEmitter = {
+    addListener(callback: (this: void) => void) {
+        callback();
+    },
+};
+
+class Handler {
+    message?: string;
+    // 箭头函数不会使用外部 this，也就是 this: void 的，但是可以绑定 this
+    callback = () => {
+        console.log(this.message);
+    };
+}
+
+const h = new Handler();
+eventEmitter.addListener(h.callback);
+
+// 箭头函数声明的方法和非箭头函数声明的有什么区别？
+class K {
+    func() {}
+}
+
+class F {
+    func = () => {};
+}
+
+/*
+从编译出来的js代码就可以看出，普通函数是绑定到构造器原型上，箭头函数是绑定到实例上
+性能上当然普通的函数更高，所有实例共用
+var K = (function () {
+    function K() {
+    }
+    K.prototype.func = function () { };
+    return K;
+}());
+var F = (function () {
+    function F() {
+        this.func = function () { };
+    }
+    return F;
+}());
+*/
+
+// ------------------------ overload -----------------------------
+// 重载，重载只和参数有关系
+// 直接看一个🌰
+// 步骤：
+// 1. 提供一个参数列表，tsc 会从前往后匹配，如果参数有包涵关系，将短的放前面
+// 2. 在最后一个兼容所有参数类型的函数中编写代码
+function reverse(target: number): number;
+function reverse(target: string): string;
+function reverse(target: any): any {
+    if (typeof target === 'number') {
+        return Number(String(target).split('').reverse().join(''));
+    } else if (typeof target === 'string') {
+        return target.split('').reverse().join('');
+    }
+}
+
+// 报错找不到匹配的函数，所以重载列表最后一个声明是不算重载的
+// console.log(reverse(true));
