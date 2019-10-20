@@ -57,10 +57,9 @@ var Season;
 })(Season || (Season = {}));
 
 其实枚举最后输的是一个对象，tsc 在构造这个对象的时候使用了一个小技巧：
-当你需要定义一个 obj 的属性 key，它的值为 value，并且 obj.value = key 的时候，你可以
-obj[obj[key] = value] = key;
+当你需要定义键值可以互相访问的时候，即 obj[key] = value; obj[value] = key; 可以采用：obj[obj[key] = value] = key;
 */
-// 第一个枚举成员不声明它的值得时候，默认是0， 当前枚举成员没有初始化并且前一个成员值是数字的情况下是前一个成员值 + 1
+// 第一个枚举成员未初始化的情况下，默认值是0，当前枚举成员没有初始化并且前一个成员值是数字的情况下值是前一个成员值 + 1
 console.log(Season.SPRING); // => 0
 console.log(Season.SUMMER); // => 1
 console.log(Season.AUTUMN); // => 2
@@ -120,7 +119,7 @@ var PromiseStatus;
     PromiseStatus["Rejected"] = "rejected";
 })(PromiseStatus || (PromiseStatus = {}));
  */
-// 比起数值型枚举的好处就是枚举值表意更强
+// 比起数值型枚举的好处就是枚举值是个字符串，更好理解
 console.log(PromiseStatus.Rejected); // => rejected
 // 很明显不能反向取值, 看例子就知道了
 // Property 'pending' does not exist on type 'typeof PromiseStatus'. Did you mean 'PENDING'?
@@ -140,7 +139,7 @@ var ComputedEnumMember;
 (function (ComputedEnumMember) {
     ComputedEnumMember[ComputedEnumMember["FIRST"] = 'abcd'.length] = "FIRST";
 })(ComputedEnumMember || (ComputedEnumMember = {}));
-// 如果一个枚举它成员都是常量成员，那么这个枚举的每一个成员都同时是一种类型，这个枚举的值只有枚举成员本身
+// 如果一个枚举它成员都是常量成员，那么这个枚举的每一个成员都同时是一种类型，这个类型的值只有枚举成员本身
 // 拿前面的 Direction 枚举来说
 const east = Direction.EAST;
 // ------------------------ compile enum -----------------------------
@@ -164,3 +163,23 @@ printImportant('ERROR', 'This is a message');
 const testOBj = { name: 'ly', age: 21 };
 console.log(1 /* Tencent */);
 let aligns = [Aligns.Up, Aligns.Down, Aligns.Left, Aligns.Right];
+/* 编译结果
+let aligns = [Aligns.Up, Aligns.Down, Aligns.Left, Aligns.Right];
+*/
+// declare 和 const 可以同时作用于 enum
+// !提问
+// 如何选择数字枚举和字符串枚举?
+/*
+如果需要序列化的时候值是非数字的情况下那只能选择使用字符串枚举，其它情况建议数字枚举
+看个例子，后端接口返回的内容如下：
+const response = {
+    data: {
+        // 后端返回 'EAST 那你就没得选了
+        direction: 'EAST'，
+    }
+}
+*/
+// 如何选择普通枚举和常量枚举？
+/*
+优先选择常量枚举，因为会减少编译出的无用代码，提高执行效率
+*/
