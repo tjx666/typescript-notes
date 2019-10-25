@@ -153,3 +153,80 @@ if (padder instanceof SpaceRepeatingPadder) {
 if (padder instanceof StringPadder) {
     padder; // type narrowed to 'StringPadder'
 }
+
+// ------------------------ nullable type -----------------------------
+// 可以为 null 的类型
+
+// 在 --strictNullChecks 为 false 的情况下，null 和 undefined 类型是可以赋值给任何类型变量的， 当然除了 never
+// let n: number = null; // Type 'null' is not assignable to type 'number'
+// let u: string = undefined;
+// let nev: never = null;
+
+// 既然用了 ts，我们就应该尽量利用类型系统的的好处，把类型搞得越严格越好
+// 如果一个变量需要同时可以赋值为 null，可以使用联合类型
+let sn: string | null = null;
+sn = 'ly';
+// 在 javascript 中 null 和 undefined 就不等价
+// sn = undefined; // Type 'null' is not assignable to type 'number'
+
+// 可选参数和可选属性
+// 对于可选参数 y tsc 会自动添加 undefined 类型即 y: number | undefined
+const pow = (x: number, y?: number) => {
+    return Math.pow(x, y || 2);
+};
+// 再次申明一边：null 和 undefined 不可以相互赋值
+pow(2, undefined);
+// pow(3, null); // Argument of type 'null' is not assignable to parameter of type 'number | undefined'
+
+// 可选属性
+interface OptionalProperty {
+    // 实际上是： OptionalProperty.name?: string | undefined
+    name?: string;
+}
+
+// class 实例成员如果没有使用 undefined 联合类型，必须在声明时初始化或者构造器初始化，还可以使用参数属性
+// 总之还是就一句话，null 类型和 undefined 不能赋值给任意类型了，会严格检查
+class TestNullable {
+    public legsCount = 2; // 声明时初始化
+    public name: string;
+    // private gf: boolean; // 假设不初始化那不是就是 undefined 了？ 但是 boolean 和 undefined 类型时不兼容的
+
+    constructor(public age: number) {
+        this.name = 'man';
+    }
+}
+
+// null 类型守卫
+function f(sn: string | null): string {
+    // 和 js 一样直接用等号判断即可
+    if (sn === null) {
+        return 'default';
+    } else {
+        return sn;
+    }
+}
+
+// 消除 null，使用 ||，其实这里也算触发了类型守卫
+function f1(sn: string | null): string {
+    return sn || 'default';
+}
+
+// 内嵌的函数有无
+function broken(name: string | null): string {
+    function postfix(epithet: string) {
+        // 内嵌的函数中 name 的 null 不会被消除，因为 postfix 鬼知道啥时候执行
+        // return name.charAt(0) + '.  the ' + epithet; // error, 'name' is possibly null
+    }
+    name = name || 'Bob';
+    // return postfix('great');
+    return ''
+}
+
+function fixed(name: string | null): string {
+    function postfix(epithet: string) {
+        // 如果你确定 name 不会是 null, 可以使用类型断言操作符，即变量名后面加个 !，将移除变量的 null 和 undefined 类型
+        return name!.charAt(0) + '.  the ' + epithet; // ok
+    }
+    name = name || 'Bob';
+    return postfix('great');
+}
