@@ -6,6 +6,9 @@
     "author": "YuTengjing",
     "license": "MIT",
     "private": true,
+    "scripts": {
+        "reinstall": "rimraf -rf ./node_modules && yarn"
+    },
     "dependencies": {
         "typescript": "^3.6.3"
     },
