@@ -37,7 +37,7 @@ enum PromiseStatus {
     REJECTED
 }
  */
-export default undefined;
+export default undefined
 
 // ------------------------ Numeric enums -----------------------------
 // ts 枚举值有两种类型：数值型和字符串型
@@ -64,12 +64,12 @@ var Season;
 */
 
 // 第一个枚举成员未初始化的情况下，默认值是0，当前枚举成员没有初始化并且前一个成员值是数字的情况下值是前一个成员值 + 1
-console.log(Season.SPRING); // => 0
-console.log(Season.SUMMER); // => 1
-console.log(Season.AUTUMN); // => 2
+console.log(Season.SPRING) // => 0
+console.log(Season.SUMMER) // => 1
+console.log(Season.AUTUMN) // => 2
 
 // 反向取值
-console.log(Season[0]); // => Spring
+console.log(Season[0]) // => Spring
 
 enum Days {
     Sun = 1,
@@ -80,9 +80,9 @@ enum Days {
     Fri,
     Sat,
 }
-console.log(Days.Mon); // => 2
+console.log(Days.Mon) // => 2
 
-(function() {
+;(function() {
     // 手动赋值可能会出现枚举值重复的情况，但是 Typescript 并不会察觉到这一点
     enum Days {
         Sun = 3,
@@ -94,11 +94,11 @@ console.log(Days.Mon); // => 2
         Sat,
     }
 
-    console.log(Days['Sun'] === 3); // true
-    console.log(Days['Wed'] === 3); // true
-    console.log(Days[3] === 'Sun'); // false
-    console.log(Days[3] === 'Wed'); // true
-})();
+    console.log(Days['Sun'] === 3) // true
+    console.log(Days['Wed'] === 3) // true
+    console.log(Days[3] === 'Sun') // false
+    console.log(Days[3] === 'Wed') // true
+})()
 
 // 数值型枚举值还可以是负数或小数，后续跟着的成员如果没有初始化还是 + 1
 enum Direction {
@@ -107,8 +107,8 @@ enum Direction {
     WEST,
     NORTH,
 }
-console.log(Direction.WEST); // 1.5
-console.log(Direction.NORTH); // 2.5
+console.log(Direction.WEST) // 1.5
+console.log(Direction.NORTH) // 2.5
 
 // ------------------------ String enum -----------------------------
 // 枚举值可以是字符串类型
@@ -128,7 +128,7 @@ var PromiseStatus;
  */
 
 // 比起数值型枚举的好处就是枚举值是个字符串，更好理解
-console.log(PromiseStatus.Rejected); // => rejected
+console.log(PromiseStatus.Rejected) // => rejected
 
 // 很明显不能反向取值, 看例子就知道了
 // Property 'pending' does not exist on type 'typeof PromiseStatus'. Did you mean 'PENDING'?
@@ -151,7 +151,7 @@ enum ComputedEnumMember {
 
 // 如果一个枚举它成员都是常量成员，那么这个枚举的每一个成员都同时是一种类型，这个类型的值只有枚举成员本身
 // 拿前面的 Direction 枚举来说
-const east: Direction.EAST = Direction.EAST;
+const east: Direction.EAST = Direction.EAST
 
 // ------------------------ compile enum -----------------------------
 enum LogLevel {
@@ -162,21 +162,21 @@ enum LogLevel {
 }
 
 // 下面等同于 type LogLevelStrings = 'ERROR' | 'WARN' | 'INFO' | 'DEBUG';
-type LogLevelStrings = keyof typeof LogLevel;
+type LogLevelStrings = keyof typeof LogLevel
 
 function printImportant(key: LogLevelStrings, message: string) {
-    const num = LogLevel[key];
+    const num = LogLevel[key]
     if (num <= LogLevel.WARN) {
-        console.log('Log level key is: ', key);
-        console.log('Log level value is: ', num);
-        console.log('Log level message is: ', message);
+        console.log('Log level key is: ', key)
+        console.log('Log level value is: ', num)
+        console.log('Log level message is: ', message)
     }
 }
-printImportant('ERROR', 'This is a message');
+printImportant('ERROR', 'This is a message')
 
 // 我觉得和 keyof 作用于普通对象没什么区别，把枚举当一个对象看待就好了
-const testOBj = { name: 'ly', age: 21 };
-type TestType = keyof typeof testOBj;
+const testOBj = { name: 'ly', age: 21 }
+type TestType = keyof typeof testOBj
 
 // ------------------------ constant enum -----------------------------
 // 常量枚举: 使用 const enum 声明的枚举
@@ -186,7 +186,7 @@ const enum BigFactory {
     Bytedance,
 }
 
-console.log(BigFactory.Tencent);
+console.log(BigFactory.Tencent)
 
 /* 编译结果
 console.log(1);
@@ -204,7 +204,7 @@ declare enum Aligns {
     Right,
 }
 
-let aligns = [Aligns.Up, Aligns.Down, Aligns.Left, Aligns.Right];
+let aligns = [Aligns.Up, Aligns.Down, Aligns.Left, Aligns.Right]
 
 /* 编译结果
 let aligns = [Aligns.Up, Aligns.Down, Aligns.Left, Aligns.Right];
