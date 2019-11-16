@@ -1,6 +1,6 @@
 /**
  * typescript 基本类型
- * 
+ *
  * 本章主要了解下 typescript 中原生数据类型和一些特有的类型
  * 基本数据类型还是那么几个： boolean, number, string, null, undefined, symbol
  * 特有的挺多：Tuple, never, any, enum 等
@@ -9,6 +9,7 @@
  * 实用比如：接口，枚举，元组
  * 实际意义：void, never
  */
+export default undefined;
 
 // ------------------------ boolean -----------------------------
 const show: boolean = true;
@@ -39,8 +40,8 @@ console.log(Infinity === Number.POSITIVE_INFINITY); // true
 
 // ------------------------ string -----------------------------
 // 和 js 没什么区别
-const singleQuoteString: string = '我在学习 typescript';
-const doubleQuoteString: string = '我在看 3.6 的英文文档';
+const singleQuoteString: string = "我在学习 typescript";
+const doubleQuoteString: string = "我在看 3.6 的英文文档";
 const age = 21;
 const es6TemplatesString = `I will be ${age + 1} years old next year`;
 
@@ -49,7 +50,7 @@ const es6TemplatesString = `I will be ${age + 1} years old next year`;
 // 第一种：像大多数静态类型语言一样使用 ElementType[] 表示数组类型，大多数情况应该使用这种
 const forever: number[] = [1, 0, 2, 4];
 // 第二种: 使用 Array<ElementType> 即 Array 类型搭配泛型
-const letters: Array<string> = ['a', 'b', new String('c').toString()];
+const letters: Array<string> = ["a", "b", new String("c").toString()];
 // 可以越界访问，不像 java 会抛数组越界的异常
 console.log(forever[100]); // => undefined
 
@@ -62,11 +63,11 @@ console.log(forever[100]); // => undefined
 3. 个数是有限的
 用途：表示一组相关联的数据，想象一组 excel 中的数据： 
 */
-const me: [string, number, boolean] = ['ly', 21, false];
+const me: [string, number, boolean] = ["ly", 21, false];
 // 不能越界访问，因为没意义
 // console.log(me[3]); // => Tuple type '[string, number, boolean]' of length '3' has no element at index '3'.
 // ts 元组的元素是允许修改的，这点和 gaython 不一样
-me[0] = 'lyreal666';
+me[0] = "lyreal666";
 console.log(Array.isArray(me)); // => true;
 
 // ------------------------ enum -----------------------------
@@ -78,14 +79,14 @@ enum Weekday {
     Tuesday,
     Wednesday,
     Friday,
-    Saturday,
+    Saturday
 }
 
 // 没有枚举的时候，我们是使用数字数组或者字符串数组表示枚举，或者高级一点使用对象，
 const Status = {
-    PENDING: Symbol('pending'),
-    FULFILLED: Symbol('fulfilled'),
-    REJECTED: Symbol('rejected'),
+    PENDING: Symbol("pending"),
+    FULFILLED: Symbol("fulfilled"),
+    REJECTED: Symbol("rejected")
 };
 // 枚举每一个元素都是有值得，默认第一个元素为0，往后递增1
 console.log(Weekday.Monday); // 1
@@ -97,7 +98,7 @@ console.log(typeof day); // number
 enum Color {
     Red = 2,
     Green = 4,
-    Blue,
+    Blue
 }
 let c: Color = Color.Blue;
 // 还是只加1
@@ -111,9 +112,9 @@ console.log(Color[4]); // 'Green
 
 // 枚举值还可以是字符串
 enum PromiseStatus {
-    PENDING = 'pending',
-    FULFILLED = 'fulfilled',
-    REJECTED = 'rejected',
+    PENDING = "pending",
+    FULFILLED = "fulfilled",
+    REJECTED = "rejected"
 }
 
 // 枚举值允许重复
@@ -121,17 +122,16 @@ enum LoadingStatus {
     INITIAL = 0,
     LOADING = 0,
     SUCCESS = 1,
-    ERROR = -1,
-};
-
+    ERROR = -1
+}
 
 // ------------------------ any -----------------------------
 // 万恶之源，尽量少用，不要把 typescript 用成 anyScript
 // 使用场景一： 当你不造一个变量是什么类型的时候，比如引用第三方库，而这个库没有类型声明
 let notSure: any = 1;
-notSure = '...';
+notSure = "...";
 // 使用场景二：当你只知道部分类型的时候
-const anyArray: any[] = [1, 'b'];
+const anyArray: any[] = [1, "b"];
 
 // any 和 Object 有啥区别？
 let obj: Object = new Date();
@@ -170,7 +170,7 @@ function error(message: string): never {
 
 // Inferred return type is never
 function fail() {
-    return error('Something failed');
+    return error("Something failed");
 }
 
 // Function returning never must have unreachable end point
@@ -179,15 +179,14 @@ function infiniteLoop(): never {
 }
 
 function checkNumber(x: string | number): boolean {
-    if (typeof x === 'number') {
-        return true
-    } else if (typeof x === 'string') {
-        return false
+    if (typeof x === "number") {
+        return true;
+    } else if (typeof x === "string") {
+        return false;
     }
-    
-    return error('Failure')
-}
 
+    return error("Failure");
+}
 
 // ------------------------ object -----------------------------
 // object 不是 Object，object 表示一个变量不是基本类型： number, string, boolean, symbol, null, or undefined.
@@ -204,12 +203,12 @@ create(null); // OK
 // create(undefined); // Error
 
 // 下面两个都可以成功赋值，因为都不是基本类型
-const myself: Object = { name: 'ly' };
+const myself: Object = { name: "ly" };
 const someObj: object = new Object(); // obj' refers to a value, but is being used as a type here.
 
 // ------------------------ type assert -----------------------------
 // 类型断言，又叫类型转换，当你确定一个变量是某个类型时，可以将该变断言为某个类型
-let someValue: any = 'this is a string';
+let someValue: any = "this is a string";
 // 形式一：可以看出类型转换符优先级不如引用操作符
 let strLength: number = (<string>someValue).length;
 // 形式二：使用 as 关键字，在 tsx 中只能使用 as，因为
@@ -217,7 +216,7 @@ let substr = (someValue as string).substr(0);
 
 // 再举一个🌰
 function typeAssertExample(arg: number | string) {
-    if (typeof arg === 'number') {
+    if (typeof arg === "number") {
         (arg as number).toFixed();
     }
 }

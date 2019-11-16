@@ -3,6 +3,6 @@
 
 
 typescript@^3.6.3:
-  version "3.6.3"
-  resolved "https://registry.npm.taobao.org/typescript/download/typescript-3.6.3.tgz#fea942fabb20f7e1ca7164ff626f1a9f3f70b4da"
-  integrity sha1-/qlC+rsg9+HKcWT/Ym8anz9wtNo=
+  version "3.7.2"
+  resolved "https://registry.npm.taobao.org/typescript/download/typescript-3.7.2.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ftypescript%2Fdownload%2Ftypescript-3.7.2.tgz#27e489b95fa5909445e9fef5ee48d81697ad18fb"
+  integrity sha1-J+SJuV+lkJRF6f717kjYFpetGPs=

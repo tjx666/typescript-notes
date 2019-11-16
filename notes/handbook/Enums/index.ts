@@ -37,6 +37,7 @@ enum PromiseStatus {
     REJECTED
 }
  */
+export default undefined;
 
 // ------------------------ Numeric enums -----------------------------
 // ts 枚举值有两种类型：数值型和字符串型

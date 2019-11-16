@@ -1,6 +1,7 @@
 /**
  * 高级类型
  */
+ export default undefined;
 
 // ------------------------ Intersection Types -----------------------------
 // 交叉类型 A & B
@@ -219,7 +220,7 @@ function broken(name: string | null): string {
     }
     name = name || 'Bob';
     // return postfix('great');
-    return ''
+    return '';
 }
 
 function fixed(name: string | null): string {
@@ -230,3 +231,28 @@ function fixed(name: string | null): string {
     name = name || 'Bob';
     return postfix('great');
 }
+
+// ------------------------ type alias -----------------------------
+// 类型别名，面试的时候经常会被问到说 type 和 interface 有什么区别
+// 本质上的区别就是 type 只是给已有的类型取了一个别名，而 interface 是新建了一个类型
+// 类型别名在错误信息中是不会出现的，而接口名会
+
+
+// ------------------------ 索引类型 -----------------------------
+// 不是可索引类型
+// 索引类型指的是是值是一个对象的索引组成的字符串字面量枚举类型
+// 看个简单的例子
+type IndexesType = keyof { name: 'ly '; age: 21 };
+// IndexesType 其实就是 "name" | "age" 类型
+const a: IndexesType = 'name'; 
+
+// keyof 叫 索引类型查询操作符（index type query）
+// 前面的例子可以看出对一个普通对象使用 keyof 返回的就是对象索引字符串字面量的联合类型
+// 索引类型查询其实就是返回索引的类型嘛，再看一个例子
+interface MyArray<T> {
+    [index: number]: T;
+}
+// MyArrayIndexType 其实就是 number 类型
+type MyArrayIndexType = keyof MyArray<number>;
+
+// 还有一个操作符叫做 
