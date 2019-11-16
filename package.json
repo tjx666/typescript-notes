@@ -10,6 +10,7 @@
         "reinstall": "rimraf -rf ./node_modules && yarn"
     },
     "dependencies": {
+        "@types/node": "^12.12.8",
         "typescript": "^3.6.3"
     },
     "devDependencies": {

@@ -2,10 +2,13 @@
  * typescript 基本类型
  *
  * 本章主要了解下 typescript 中原生数据类型和一些特有的类型
- * 基本数据类型还是那么几个： boolean, number, string, null, undefined, symbol
- * 特有的挺多：Tuple, never, any, enum 等
+ *
+ * 基本数据类型还是那么几个： boolean, number, string, null, undefined, symbol, bigInt
+ * 特有的挺多：Tuple, never, unknown, any, enum 等
+ *
  * 一些特殊情况需要人为指定类型时可以使用类型断言
- * 可以了解到 ts 中类型中非常丰富，实用和具有实际意义的
+ *
+ * 可以了解到 ts 中类型是非常灵活，实用，而且都有其实际意义
  * 实用比如：接口，枚举，元组
  * 实际意义：void, never
  */
@@ -16,7 +19,12 @@ const show: boolean = true;
 // 基本类型转对象类型没问题
 const display: Boolean = true;
 // 对象类型转基本类型不行
-//  const is:boolean = new Boolean(true);  // => Type 'Boolean' is not assignable to type 'boolean'
+// const boolObj = new Boolean(false);
+// const isProd: boolean = boolObj;
+/* =>
+Type 'Boolean' is not assignable to type 'boolean'.
+'boolean' is a primitive, but 'Boolean' is a wrapper object. Prefer using 'boolean' when possible.
+*/
 
 // ------------------------ number -----------------------------
 // 可以使用 es6 的二进制 0b 和八进制 0o
@@ -26,14 +34,38 @@ const decimalObj: Number = 999;
 // const decimal1: number = new Number(1024);
 // Type 'Number' is not assignable to type 'number'
 // 'number' is a primitive, but 'Number' is a wrapper object. Prefer using 'number' when possible.
+
+// 十进制
 const hex = 0x10;
 console.log(hex); // => 16
+
+// 二进制
 const binary = 0b10;
 console.log(binary); // => 2
+
+// 八进制
 const octal = 0o10;
 console.log(octal); // => 8
-const nan: number = NaN;
-const max: number = Infinity;
+
+// NaN: not a number
+const notANumber: number = NaN;
+// 很长一段事件以为 NaN 其实是字面量，事实上是全局对象的一个属性
+console.log(global.NaN);
+console.log('NaN equals to NaN?', NaN === NaN); // => false
+// ES6 新增的 Object.is，它和严格等 === 的区别在于 NaN 等于 NaN， 但是 +0 不等于 -0
+console.log(Object.is(NaN, NaN)); // => true
+console.log(+0 === -0); // => true
+console.log(Object.is(0, -0)); // => false
+
+const infinity: number = Infinity;
+console.log('Infinity equals to Infinity?', Infinity === Infinity); // => true
+console.log(1 / 0 === 2 / 0); // => true
+
+/*
+NaN 不等于 NaN，为毛 Infinity 等于 Infinity?
+我觉得设计上有些不统一， 一个
+*/
+
 const min: number = Number.MIN_VALUE;
 console.log(Infinity === Number.MAX_VALUE); // false
 console.log(Infinity === Number.POSITIVE_INFINITY); // true
