@@ -1,3 +1,4 @@
+/// <reference path="./externalMod.d.ts" />
 /**
  * TypeScript 出现的比 ES6 还早，ES6 出现以前 TypeScript 就已经有自己的模块化解决方案了
  * 早期的 ts 中有两种模块
@@ -9,16 +10,20 @@
  * 一些总结：
  * 1. 建议平时开发使用 ESM，抛弃其它模块化方案，什么 AMD, UMD 见鬼去
  * 2. 根据实际需求合理使用 ESM, 默认导出就应该用 export default, 导出多个变量就应该用 export {}
- * 3. 不要再模块中使用 namespace，namespace 目前存在的意义貌似只有再声明文件中用来描述对象
+ * 3. 不要在模块中使用 namespace，namespace 目前存在的意义貌似只有再声明文件中用来描述对象
+ *
+ * 这个章节的内容我太熟悉了，只是对 handbook 中一些感兴趣的部分就行测试
  */
 export default undefined;
 
 // ------------------------ import 关键字 -----------------------------
+// import 关键字能在哪些地方使用？
 const name = 'ly';
 // import nameAlias = name; // Cannot find namespace 'name'
 
 class A {}
 // import B = A; // 'A' only refers to a type, but is being used as a namespace here
+// 根据提示貌似只能对模块和 namespace 使用
 
 namespace testSpace {
     let a = 999;
@@ -29,9 +34,14 @@ namespace testSpace {
     };
     export class TestClass {}
     export namespace innerSpace {
-        const v = '666';
+        export const v = '666';
     }
 }
+
+console.log(testSpace.innerSpace.v); // => 666
+
+// 一层层引用太麻烦了，使用 import = 来简化引用
+import v = testSpace.innerSpace.v;
 
 import age = testSpace.age;
 import obj = testSpace.obj;
@@ -43,6 +53,7 @@ log();
 obj.work = 'BE';
 log();
 
+// 也可以直接定义一个变量，和使用 import 定义有区别吗？
 let ageVar = testSpace.age;
 let objVar = testSpace.obj;
 const TestClassVar = testSpace.TestClass;
@@ -89,3 +100,22 @@ var innerSpaceVar = testSpace.innerSpace;
 */
 // 可以看出使用 import 或者 const 声明 namespace 内部成员在编译出的 js 中没有任何区别
 // 从上面的使用也可以看出，我发现的唯一区别就是 import 导入的成员不能被修改
+// 其实 import mod = require() 基本等同于 const mod = require()，只不过有这套模块化方案时没有 const，所以用 import 来实现不可修改
+
+// 使用 export = module 来导出模块， import module = require('module_path') 这是 ESM 出来以前的模块化方案
+import add = require('./add');
+console.log(add(1, 1)); // => 2
+
+// ESM 即 ES2015 module 新标准我们已经很熟悉了
+// 默认导入
+import str from './esm';
+// 能不能混用？
+import str1 = require('./esm');
+console.log(str1); // => { default: 'default export' }
+// 强烈不建议混用
+
+if (true) {
+    // import 不能在块作用域中使用
+    // import str2 from './esm;'// An import declaration can only be used in a namespace or module
+    const str3 = require('./esm');
+}

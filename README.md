@@ -5,5 +5,6 @@
 学习资料：
 
 1. [handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html)
-2. [TypeScript 入门教程](https://ts.xcatliu.com/)
-3. [TypeScript Deep Dive](https://basarat.gitbooks.io/typescript/content/)
+2. [handbook 中文 git book](https://zhongsp.gitbook.io/typescript-handbook/)
+3. [TypeScript 入门教程](https://ts.xcatliu.com/)
+4. [TypeScript Deep Dive](https://basarat.gitbooks.io/typescript/content/)
